@@ -3,3 +3,5 @@ node_modules/
 .DS_Store
 
 public/
+
+src/templates/partials/_writing/

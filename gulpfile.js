@@ -27,19 +27,6 @@ const runSequence = require('run-sequence')
 const config = require('./config').get()
 const prettyUrl = require('gulp-pretty-url');
 const markdown = require('gulp-markdown');
-// console.log(markdown.marked.Renderer);
-// const renderer = new markdown.marked.Renderer();
-
-// renderer.heading = function (text, level) {
-//   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
-
-//   return '<h' + level + '><a name="' +
-//                 escapedText +
-//                  '" class="anchor" href="#' +
-//                  escapedText +
-//                  '"><span class="header-link"></span></a>' +
-//                   text + '</h' + level + '>';
-// }
 
 
 const browserslist = 'last 2 versions, Firefox ESR'  // see https://github.com/ai/browserslist#queries
@@ -127,9 +114,10 @@ gulp.task('markdown', () => {
 
   return gulp.src('src/writing/*.md')
     .pipe(plumber())
-    .pipe(markdown({
-      renderer: renderer
-    }))
+    // .pipe(markdown({
+    //   renderer: renderer
+    // }))
+    .pipe(markdown())
     .pipe(plumber.stop())
     .pipe(gulp.dest('src/templates/partials/_writing'));
 })
@@ -206,7 +194,7 @@ gulp.task('critical', ['rev:replace'], function() {
 })
 
 gulp.task('clean', () => {
-  return del('public/')
+  return del(['public/', 'src/templates/partials/_writing/'])
 })
 
 gulp.task('build', (done) => {
