@@ -1,121 +1,128 @@
-'use strict';
+'use strict'
 
-const fs             = require('fs');
-const path           = require('path');
-const gulp           = require('gulp');
-const gutil          = require('gulp-util');
-const del            = require('del');
-const browserSync    = require('browser-sync').create();
-const autoprefixer   = require('autoprefixer');
-const postcss        = require('gulp-postcss');
-const sass           = require('gulp-sass');
-const sourcemaps     = require('gulp-sourcemaps');
-const nunjucksRender = require('gulp-nunjucks-render');
-const source         = require('vinyl-source-stream');
-const buffer         = require('vinyl-buffer');
-const browserify     = require('browserify');
-const rev            = require('gulp-rev');
-const revReplace     = require('gulp-rev-replace');
-const uglify         = require('gulp-uglify');
-const cssnano        = require('gulp-cssnano');
-const htmlmin        = require('gulp-htmlmin');
-const gulpif         = require('gulp-if');
-const critical       = require('critical').stream;
-const runSequence    = require('run-sequence');
+const fs = require('fs')
+const path = require('path')
+const gulp = require('gulp')
+const gutil = require('gulp-util')
+const del = require('del')
+const autoprefixer = require('autoprefixer')
+const postcss = require('gulp-postcss')
+const sass = require('gulp-sass')
+const stylelint = require('gulp-stylelint')
+const sourcemaps = require('gulp-sourcemaps')
+const nunjucks = require('gulp-nunjucks')
+const source = require('vinyl-source-stream')
+const buffer = require('vinyl-buffer')
+const browserify = require('browserify')
+const envify = require('loose-envify/custom')
+const rev = require('gulp-rev')
+const revReplace = require('gulp-rev-replace')
+const uglify = require('gulp-uglify')
+const cleancss = require('gulp-clean-css')
+const htmlmin = require('gulp-htmlmin')
+const gulpif = require('gulp-if')
+const plumber = require('gulp-plumber')
+const critical = require('critical').stream
+const runSequence = require('run-sequence')
+const config = require('./config').get()
+const browserslist = 'last 2 versions, Firefox ESR'  // see https://github.com/ai/browserslist#queries
+const extrasGlob = 'src/**/*.{txt,json,xml,ico,jpeg,jpg,png,gif,svg,ttf,otf,eot,woff,woff2}'
 
+let bundler = browserify({ entry: true, debug: true })
+  .add('src/js/app.js')
+  .transform('eslintify', { continuous: true })
+  .transform('babelify')
+  .transform(envify(config))
+  .transform('uglifyify')
 
-function bundle(options) {
-  options = options || {};
-  const bundlerOpts = { entry: true, debug: true };
-  let bundler = browserify(
-    'src/js/app.js', bundlerOpts
-    )
-    .transform('babelify', { presets: ['es2015'] });
-
-  function rebundle() {
-    return bundler.bundle()
-      .on('error', function(err) {
-        gutil.log(gutil.colors.red(err.message));
-        this.emit('end');
-      })
-      .pipe(source('bundle.js'))
-      .pipe(buffer())
-      .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('public/js/'));
-  }
-
-  if (options.watch) {
-    const watchify = require('watchify');
-    bundler = watchify(bundler);
-    bundler.on('update', () => {
-      gutil.log('-> bundling...');
-      rebundle();
-    });
-  }
-
-  return rebundle();
+function bundle() {
+  return bundler.bundle()
+  .on('error', function(err) {
+    gutil.log(gutil.colors.red(err.message))
+    this.emit('end')
+  })
+  .pipe(source('bundle.js'))
+  .pipe(buffer())
+  .pipe(sourcemaps.init({ loadMaps: true }))
+  .pipe(sourcemaps.write())
+  .pipe(gulp.dest('public/js/'))
 }
 
+
 gulp.task('browserify', () => {
-  return bundle();
-});
+  return bundle()
+})
 
 gulp.task('watchify', () => {
-  return bundle({ watch: true });
-});
+  const watchify = require('watchify')
+  bundler = watchify(bundler)
+  bundler.on('update', () => {
+    gutil.log('-> bundling...')
+    bundle()
+  })
+  return bundle()
+})
 
 gulp.task('sass', () => {
   return gulp.src('src/scss/**/*.scss')
+    .pipe(plumber())
+    .pipe(stylelint({
+      browsers: browserslist,
+      syntax: 'scss',
+      reporters: [ { formatter: 'string', console: true } ],
+      failAfterError: false
+    }))
     .pipe(sourcemaps.init())
-    .pipe(sass(
-      {
-        includePaths: [path.join(path.dirname(require.resolve('foundation-sites')), '../scss')]
-      }
-    )
-    .on('error', sass.logError))
-    .pipe(postcss([autoprefixer]))
+    .pipe(sass({
+      includePaths: [path.join(path.dirname(require.resolve('foundation-sites')), '../scss')]
+    }))
+    .pipe(postcss([autoprefixer({ browsers: browserslist })]))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('public/css/'));
-});
+    .pipe(plumber.stop())
+    .pipe(gulp.dest('public/css/'))
+})
 
 gulp.task('nunjucks', () => {
-  nunjucksRender.nunjucks.configure(['src/templates/'], { watch: false });
-  return gulp.src(['src/templates/**/*.html', 'src/js/**/*.html', '!**/_*'])
-    .pipe(nunjucksRender())
-    .pipe(gulp.dest('public/'));
-});
+  return gulp.src(['src/templates/**/*.html', '!**/_*'])
+    .pipe(plumber())
+    .pipe(nunjucks.compile(config, {
+      throwOnUndefined: true
+    }))
+    .pipe(plumber.stop())
+    .pipe(gulp.dest('public/'))
+})
 
 gulp.task('extras', () => {
-  return gulp.src('src/**/*.{txt,json,xml,jpeg,jpg,png,gif,svg,ttf,otf,eot,woff,woff2}')
-    .pipe(gulp.dest('public/'));
-});
+  return gulp.src(extrasGlob)
+    .pipe(gulp.dest('public/'))
+})
 
-gulp.task('watch', ['nunjucks', 'sass', 'extras', 'watchify'], () => {
+gulp.task('watch', ['watchify'], () => {
+  const browserSync = require('browser-sync').create()
   browserSync.init({
     server: 'public',
     files: 'public/**/*'
-  });
+  })
 
-  gulp.watch('src/scss/**/*.scss', ['sass']);
-  gulp.watch('src/**/*.html', ['nunjucks']);
-  gulp.watch('src/**/*.{txt,json,xml,jpeg,jpg,png,gif,svg,ttf,otf,eot,woff,woff2}', ['extras']);
-});
+  gulp.watch('src/scss/**/*.scss', ['sass'])
+  gulp.watch('src/**/*.html', ['nunjucks'])
+  gulp.watch(extrasGlob, ['extras'])
+})
 
-gulp.task('rev', ['build'], () => {
+gulp.task('rev', () => {
   return gulp.src(['public/**/*', '!**/*.html'], { base: 'public' })
     .pipe(rev())
     .pipe(gulp.dest('public/'))
     .pipe(rev.manifest())
-    .pipe(gulp.dest('public/'));
-});
+    .pipe(gulp.dest('public/'))
+})
 
 gulp.task('rev:replace', ['rev'], () => {
-  const manifest = gulp.src('public/rev-manifest.json');
+  const manifest = gulp.src('public/rev-manifest.json')
   return gulp.src('public/**/*')
     .pipe(revReplace({ manifest: manifest }))
-    .pipe(gulp.dest('public/'));
-});
+    .pipe(gulp.dest('public/'))
+})
 
 gulp.task('minify', ['rev:replace', 'critical'], () => {
   return gulp.src(['public/**/*'], { base: 'public/' })
@@ -128,13 +135,13 @@ gulp.task('minify', ['rev:replace', 'critical'], () => {
       },
       output: {
         preamble: (function() {
-          var banner = fs.readFileSync('banner.txt', 'utf8');
-          banner = banner.replace('@date', (new Date()));
-          return banner;
+          var banner = fs.readFileSync('banner.txt', 'utf8')
+          banner = banner.replace('@date', (new Date()))
+          return banner
         }())
       }
     })))
-    .pipe(gulpif(/-\w{10}\.css$/, cssnano()))
+    .pipe(gulpif(/-\w{10}\.css$/, cleancss()))
     .pipe(gulpif('*.html', htmlmin({
       collapseWhitespace: true,
       removeComments: true,
@@ -142,8 +149,8 @@ gulp.task('minify', ['rev:replace', 'critical'], () => {
       removeScriptTypeAttributes: true,
       removeStyleLinkTypeAttributes: true
     })))
-    .pipe(gulp.dest('public/'));
-});
+    .pipe(gulp.dest('public/'))
+})
 
 gulp.task('critical', ['rev:replace'], function() {
   return gulp.src('public/**/*.html')
@@ -152,35 +159,35 @@ gulp.task('critical', ['rev:replace'], function() {
     inline: true,
     minify: true
   }))
-  .pipe(gulp.dest('public/'));
-});
+  .pipe(gulp.dest('public/'))
+})
 
 gulp.task('clean', () => {
-  return del(['public/*', '!public/favicon.ico', '!public/favicon-152.png']);
-});
+  return del('public/')
+})
 
 gulp.task('build', (done) => {
   runSequence(
     'clean',
     ['browserify', 'nunjucks', 'sass', 'extras'],
     done
-  );
-});
+  )
+})
 
 gulp.task('build:production', (done) => {
   runSequence(
     'build',
     ['rev:replace', 'minify', 'critical'],
     done
-  );
-});
+  )
+})
 
 gulp.task('start', (done) => {
   runSequence(
     'build',
     'watch',
     done
-  );
-});
+  )
+})
 
-gulp.task('default', ['build']);
+gulp.task('default', ['build'])

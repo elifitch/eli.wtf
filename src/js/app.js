@@ -1,13 +1,8 @@
-'use strict';
+import $ from 'jquery'
+import foundation from 'foundation-sites'  // eslint-disable-line no-unused-vars
 
 
-console.log('Hello, eli.wtf');
-
-const dateDisplayEl = document.createElement('div');
-dateDisplayEl.innerHTML = new Date();
-document.body.appendChild(dateDisplayEl);
-
-const $ = require('jquery');
-const foundation = require('foundation-sites');
-
-$(document).foundation();
+$(document).foundation()
+const dateDisplayEl = document.createElement('div')
+dateDisplayEl.innerHTML = new Date()
+document.body.appendChild(dateDisplayEl)

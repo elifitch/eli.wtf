@@ -1,0 +1,15 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    ISL -- Digital Creative Agency -- @istrategylabs
+
+# THANKS
+
+    
+
+# TECHNOLOGY COLOPHON
+
+    ES2015, CSS3, HTML5
+       Foundation,Gulp, Browserify, Babel, SASS, Nunjucks

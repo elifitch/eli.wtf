@@ -1,6 +1,6 @@
 # eli.wtf
 
-Personal site of Eli Fitch
+a site
 
 
 ## Requirements
@@ -24,10 +24,10 @@ First, install your dependencies:
 npm install
 ```
 
-To start a Browser Sync server:
+To start a Browsersync server:
 
 ```
-npm start
+npm run dev
 ```
 
 or to build, cachebust, and minify all assets for production:
@@ -36,43 +36,32 @@ or to build, cachebust, and minify all assets for production:
 npm run build
 ```
 
+## Configuration
 
-## What to change
+[nconf](https://github.com/indexzero/nconf) is used to handle configuration and lives in `config.js`.
 
-### Structured Data
+All configuration variables should be defined in the `nconf.defaults` and it should be indicated if they are required.
 
-[Structured Data](https://developers.google.com/structured-data/) tags are included to provide better data for search engine indexes.
-By default, the [Logo's](https://developers.google.com/structured-data/customize/logos) and
-[Social Profile Links](https://developers.google.com/structured-data/customize/social-profiles) are
-included. Different tags will apply for every project, so they should be added when appropriate.
+The configuration is passed to [envyify](https://github.com/hughsk/envify) for transforming with browserify. This
+means you can use `process.env.FOO` in your browserified JavaScript files and the appropriate environment variable
+will be substituted during the build process to be shipped in the browser.
 
-* Update the [Logo's](https://developers.google.com/structured-data/customize/logos) and [Social Profile Links](https://developers.google.com/structured-data/customize/social-profiles) tags with the appropriate values.
-* Add additional tags based on Google's [Promote Your Content with Structured Data Markup](https://developers.google.com/structured-data/) guidelines.
-* Use the [Structured Data Testing Tool](https://developers.google.com/structured-data/testing-tool/) to verify the tags are set up correctly.
-* Optionally, [Ask Google to re-crawl your URLs](https://support.google.com/webmasters/answer/6065812?hl=en&ref_topic=4617736&rd=1) after deploying to update your web page in Google's search indexes.
+__🔐 TIP:__ Don't leak secret keys, neither by commmitting them nor by passing them to browserify. If the var you are
+using should be kept secret, you should not add it to `config.js`.
 
-### Facebook Open Graph Tags
 
-Some Open Graph tags are included as defined by Facebook's [Sharing Best Practices for Websites](https://developers.facebook.com/docs/sharing/best-practices).
-If more tags apply, add them as defined by the [Open Graph Protocol](http://opengraphprotocol.org/).
+__⏱ TIP:__ If the config var is an amount of time, specify the units in the var name:
 
-* Update the tags defined in the [Use proper Open Graph tags](https://developers.facebook.com/docs/sharing/best-practices#tags) with the appropriate values.
-* Add an absolute URL to an image per the [Optimize images to generate great previews](https://developers.facebook.com/docs/sharing/best-practices#images) section, ideally 1200x630 pixels in size, but no smaller than 600x315 pixels and under 8MB.
-* Use the [Facebook URL Debugger](https://developers.facebook.com/tools/debug) to pre-cache the image and verify the tags are set up correctly.
-
-### Twitter Card Tags
-
-Twitter [Summary Card with Large Image](https://dev.twitter.com/cards/types/summary-large-image)
-tags are included to prominently display image content on tweets.
-
-* Update the tags defined in the Reference section with the appropriate values.
-* Add an absolute URL to an image per the `twitter:image` tag reference, at least 280x150 pixels in size and under 1MB.
-* Use the [Twitter Card Validator](https://cards-dev.twitter.com/validator) to pre-cache the image and verify the tags are set up correct.
-
+```
+nconf.defaults({
+  TIMEOUT_MS: 2000,
+  EXPIRATION_S: 3
+})
+```
 
 ## Foundation
 
-Foundation Sites 6.2.0 is included with a small set of components included by
+[Foundation Sites](http://foundation.zurb.com/sites.html) 6.2.0 is included with a small set of components enabled by
 default. There is a list of everything you can add at [Foundation's Kitchen Sink](http://foundation.zurb.com/sites/docs/kitchen-sink.html).
 To add more, uncomment the appropriate includes from the `app.scss` file along
 with the appropriate settings section for the component in the `_.settings.scss`
@@ -89,5 +78,32 @@ To get started with what's included by default, read these docs:
 * [Float Classes](http://foundation.zurb.com/sites/docs/float-classes.html)
 * [Flexbox Classes](http://foundation.zurb.com/sites/docs/flexbox.html)
 
+## ESlint
+
+[ESlint](http://eslint.org/) is used for static analysis of JavaScript files. By default,
+the `.eslintrc` is configured to extend [Airbnb's base](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb#eslint-config-airbnbbase) configuration,
+with a few small modifications:
+
+* 2 spaces for indentation.
+* No semicolons.
+* Only single quotes.
+* Unix linebreaks.
+
+If you use global variables that are already defined in the DOM, add them to the `globals` object
+in the `.eslintrc` to [register them](http://eslint.org/docs/user-guide/configuring#specifying-globals) with the linter.
+
+## Stylelint
+
+[Stylelint](https://github.com/stylelint/stylelint) is used for static analysis of SASS files. By default,
+the `.stylelintrc` is configured to extend [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard)
+and uses [stylelint-selector-bem-pattern](https://github.com/davidtheclark/stylelint-selector-bem-pattern),
+with a few small modifications:
+
+* 4 spaces for indentation.
+* No vendor prefixes.
+* Max of 2 adjacent empty lines.
+* Required [hierarchical selectors](http://stylelint.io/user-guide/rules/indentation/#hierarchicalselectors-truefalse).
+* Required empty line between nested selectors, except first nested.
+* No [unsupported browser features](http://stylelint.io/user-guide/rules/no-unsupported-browser-features/).
 
 Generated by [mo static](https://github.com/istrategylabs/mo-static).

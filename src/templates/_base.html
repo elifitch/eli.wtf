@@ -4,9 +4,8 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>eli.wtf</title>
-        <meta name="description" content="Personal site of Eli Fitch">
+        <meta name="description" content="a site">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="/css/app.css" rel="stylesheet">
         <link rel="apple-touch-icon-precomposed" href="/favicon-152.png">
 
         {# Facebook Open Graph Tags #}
@@ -25,13 +24,38 @@
         <meta name="twitter:title" content="">
         <meta name="twitter:description" content="">
         <meta name="twitter:image" content="">
+
+        {# loadCSS #}
+        <link rel="preload" href="/css/app.css" as="style" onload="this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="/css/app.css"></noscript>
+        <script>
+            /*! loadCSS: load a CSS file asynchronously. [c]2016 @scottjehl, Filament Group, Inc. Licensed MIT */
+            !function(e){"use strict"
+            var t=function(t,n,r){function o(e){return i.body?e():void setTimeout(function(){o(e)})}function a(){d.addEventListener&&d.removeEventListener("load",a),d.media=r||"all"}var l,i=e.document,d=i.createElement("link")
+            if(n)l=n
+            else{var s=(i.body||i.getElementsByTagName("head")[0]).childNodes
+            l=s[s.length-1]}var u=i.styleSheets
+            d.rel="stylesheet",d.href=t,d.media="only x",o(function(){l.parentNode.insertBefore(d,n?l:l.nextSibling)})
+            var f=function(e){for(var t=d.href,n=u.length;n--;)if(u[n].href===t)return e()
+            setTimeout(function(){f(e)})}
+            return d.addEventListener&&d.addEventListener("load",a),d.onloadcssdefined=f,f(a),d}
+            "undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this)
+
+            /*! CSS rel=preload polyfill. Depends on loadCSS function. [c]2016 @scottjehl, Filament Group, Inc. Licensed MIT  */
+            !function(t){if(t.loadCSS){var e=loadCSS.relpreload={}
+            if(e.support=function(){try{return t.document.createElement("link").relList.supports("preload")}catch(e){return!1}},e.poly=function(){for(var e=t.document.getElementsByTagName("link"),n=0;n<e.length;n++){var r=e[n]
+            "preload"===r.rel&&"style"===r.getAttribute("as")&&(t.loadCSS(r.href,r),r.rel=null)}},!e.support()){e.poly()
+            var n=t.setInterval(e.poly,300)
+            t.addEventListener&&t.addEventListener("load",function(){t.clearInterval(n)}),t.attachEvent&&t.attachEvent("onload",function(){t.clearInterval(n)})}}}(this)
+        </script>
+
+        <script src="/js/bundle.js" async defer></script>
     </head>
     <body>
         {% block content %}
         {% endblock %}
 
         {% block javascripts %}
-        <script src="/js/bundle.js"></script>
         {% endblock %}
 
         {# Structured Data for Logo and Social Profile Links #}
