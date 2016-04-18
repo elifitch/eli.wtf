@@ -26,6 +26,22 @@ const critical = require('critical').stream
 const runSequence = require('run-sequence')
 const config = require('./config').get()
 const prettyUrl = require('gulp-pretty-url');
+const markdown = require('gulp-markdown');
+// console.log(markdown.marked.Renderer);
+// const renderer = new markdown.marked.Renderer();
+
+// renderer.heading = function (text, level) {
+//   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+
+//   return '<h' + level + '><a name="' +
+//                 escapedText +
+//                  '" class="anchor" href="#' +
+//                  escapedText +
+//                  '"><span class="header-link"></span></a>' +
+//                   text + '</h' + level + '>';
+// }
+
+
 const browserslist = 'last 2 versions, Firefox ESR'  // see https://github.com/ai/browserslist#queries
 const extrasGlob = 'src/**/*.{txt,json,xml,ico,jpeg,jpg,png,gif,svg,ttf,otf,eot,woff,woff2}'
 
@@ -93,6 +109,29 @@ gulp.task('nunjucks', () => {
     .pipe(prettyUrl())
     .pipe(plumber.stop())
     .pipe(gulp.dest('public/'))
+})
+
+gulp.task('markdown', () => {
+  // const renderer = new markdown.marked.Renderer();
+  // renderer.heading = function (text, level) {
+  //   //dashes between words
+  //   var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+
+  //   return '<h' + level + '><a name="' +
+  //                 escapedText +
+  //                  '" class="anchor" href="#' +
+  //                  escapedText +
+  //                  '"><span class="header-link"></span></a>' +
+  //                   text + '</h' + level + '>';
+  // }
+
+  return gulp.src('src/writing/*.md')
+    .pipe(plumber())
+    .pipe(markdown({
+      renderer: renderer
+    }))
+    .pipe(plumber.stop())
+    .pipe(gulp.dest('src/templates/partials/_writing'));
 })
 
 gulp.task('extras', () => {
@@ -173,7 +212,7 @@ gulp.task('clean', () => {
 gulp.task('build', (done) => {
   runSequence(
     'clean',
-    ['browserify', 'nunjucks', 'sass', 'extras'],
+    ['browserify', 'markdown', 'nunjucks', 'sass', 'extras'],
     done
   )
 })
