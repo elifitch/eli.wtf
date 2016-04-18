@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.DS_Store
+
+public/*
+!public/favicon.ico
+!public/favicon-152.png

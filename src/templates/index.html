@@ -1,0 +1,23 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+
+<main role="main">
+    <section class="row">
+        <div class="columns">
+            <h1>Hello, eli.wtf</h1>
+            <p>With Foundation Sites 6.2.0, documentation at <a href="http://foundation.zurb.com/sites/docs/">foundation.zurb.com</a></p>
+        </div>
+    </section>
+</main>
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ super() }}
+<script>
+    console.log('Hello, index');
+</script>
+{% endblock %}
