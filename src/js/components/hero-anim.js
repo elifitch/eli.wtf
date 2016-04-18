@@ -1,6 +1,8 @@
 'use strict'
 /* global Elastic */
 
+//TODO: add resize listener to fix resize weirdness
+
 import TweenMax from 'gsap'
 
 module.exports = (function () {

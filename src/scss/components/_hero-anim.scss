@@ -1,7 +1,3 @@
-.hero-anim {
-
-}
-
 $colors: #ffff53, #4dffff, #5bf390, #ff4cff, #ff813d, #6060ef;
 
 //height first
@@ -21,9 +17,10 @@ $bar-width: $bar-height / 4.8;
   background: #333;
   overflow: hidden;
   @media #{$medium-up} {
-    height: 80vh;
-    min-height: $bar-height*1.5;
+    // height: 80vh;
+    min-height: $bar-height*1.25;
     font-size: 3vw;
+    padding-bottom: 6rem;
   }
   @media #{$large-up} {
     font-size: 1em;
