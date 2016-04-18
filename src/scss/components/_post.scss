@@ -15,5 +15,8 @@
     }
     p {
         @extend %copy;
+        &+p {
+            padding-top: 1em;
+        }
     }
 }
