@@ -2,6 +2,20 @@
     font-family: 'brandon grotesque';
     font-weight: 800;
     font-style: italic;
-    color: #333;
+    color: inherit;
     font-size: 6em;
+}
+%beta {
+    @extend %alpha;
+    font-size: 3em;
+}
+%gamma {
+    @extend %alpha;
+}
+%copy {
+    font-family: 'pinopolis';
+    font-weight: 400;
+    font-style: regular;
+    font-size: 1.2em;
+    line-height: 1.8;
 }

@@ -136,6 +136,7 @@ gulp.task('watch', ['watchify'], () => {
 
   gulp.watch('src/scss/**/*.scss', ['sass'])
   gulp.watch('src/**/*.html', ['nunjucks'])
+  gulp.watch('src/writing/*.md', ['markdown', 'nunjucks'])
   gulp.watch('src/js/**/*.js', ['browserify'])
   gulp.watch(extrasGlob, ['extras'])
 })

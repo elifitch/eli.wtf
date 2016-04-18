@@ -1,0 +1,19 @@
+.post {
+    color: $off-white;
+    h1 {
+        @extend %alpha;
+        margin-bottom: 0.5em;
+    }
+    h2 {
+        @extend %beta;
+        margin-bottom: 0.5em;
+        padding-top: 1em;
+    }
+    h3 {
+        @extend %beta;
+        margin-bottom: 0.5em;
+    }
+    p {
+        @extend %copy;
+    }
+}
