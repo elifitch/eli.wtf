@@ -1,11 +1,14 @@
 @charset "utf-8";
 @import "settings";
 @import "foundation";
-@include foundation-global-styles;
+@import "fonts";
+@import "type";
+@import "base";
+// @include foundation-global-styles;
 @include foundation-flex-grid;
-@include foundation-typography;
-@include foundation-forms;
-@include foundation-button;
+// @include foundation-typography;
+// @include foundation-forms;
+// @include foundation-button;
 // @include foundation-accordion;
 // @include foundation-accordion-menu;
 // @include foundation-badge;
@@ -40,3 +43,4 @@
 @include foundation-flex-classes;
 
 // Add BEM component imports/includes here
+@import "components/hero-anim";

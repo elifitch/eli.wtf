@@ -1,0 +1,54 @@
+.hero-anim {
+
+}
+
+$colors: #ffff53, #4dffff, #5bf390, #ff4cff, #ff813d, #6060ef;
+$bar-height: 20em;
+// $bar-width: 6.25em;
+$bar-width: $bar-height / 4.8;
+$title-size: $bar-width*1.98;
+
+// html {
+//   background-color: #333;
+//   font-size: 12px;
+//   overflow: hidden;
+// }
+.hero-anim {
+  width: $bar-width*6;
+  height: $bar-height;
+  // height: $bar-height;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)skew(-7.77deg);
+  text-align: center;
+}
+.hero-anim__bar {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: inline-block;
+  height: $bar-height;
+  width: $bar-width;
+  float: left;
+  // border-radius: 0.1em;
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      background-color: nth($colors, $i);
+    }
+  }
+  &:nth-child(odd) {
+    transform: translateY(12.5%);
+  }
+  &:nth-child(even) {
+    transform: translateY(-12.5%);
+  }
+}
+.hero-anim__title {
+    @extend %alpha;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // transform: translate(-49.5%, -50%);
+    transform: translate(-49.7%, -50%);
+    font-size: $title-size;
+}

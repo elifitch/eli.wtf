@@ -21,6 +21,7 @@
     "eslint-plugin-react": "4.3.0",
     "eslintify": "2.0.1",
     "foundation-sites": "6.2.0",
+    "gsap": "^1.18.2",
     "gulp": "3.9.0",
     "gulp-clean-css": "2.0.4",
     "gulp-htmlmin": "1.2.0",
