@@ -11,6 +11,9 @@ $dark-gray: #333;
 $darker-gray: #222;
 $off-white: #fafafa;
 
+//gradients
+$slant-gradient: linear-gradient(97.77deg, $yellow 0%, $yellow 16.666666%, $blue 16.666666%, $blue 33.333333%, $green 33.333333%, $green 50%, $pink 50%, $pink 66.666666%, $orange 66.666666%, $orange 83.3333333%, $purple 83.3333333%, $purple 100%);
+
 //  Foundation for Sites Settings
 //  -----------------------------
 //
@@ -70,7 +73,7 @@ $foundation-palette: (
 );
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
-$dark-gray: #8a8a8a;
+// $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #fefefe;
 $body-background: $white;

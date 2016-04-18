@@ -43,6 +43,11 @@
 @include foundation-float-classes;
 @include foundation-flex-classes;
 
+//Mixins
+@import "mixins/abs-center";
+@import "mixins/slant-gradient-bg";
+
 // Add BEM component imports/includes here
 @import "components/layout";
 @import "components/hero-anim";
+@import "components/link-block";

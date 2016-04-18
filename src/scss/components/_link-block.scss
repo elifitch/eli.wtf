@@ -1,12 +1,44 @@
 .link-block {
-
+    display: block;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    // padding-bottom: 60%;
+    padding-bottom: 30%;
+    border-radius: 0.1em;
+    margin-bottom: 3rem;
 }
 .link-block__bg {
-
+    @include abs-center;
+    width: 100%;
+    height: 100%;
+    background-blend-mode: multiply;
+    background-size: cover;
+    background-position: 50%;
+    border-radius: 0.1rem;
 }
 .link-block__video {
 
 }
 .link-block__content {
-    
+    @include abs-center;
+    @extend %alpha;
+    display: inline-block;
+    color: $off-white;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
+}
+
+.link-block--trends {
+    .link-block__bg {
+        // background-color: lighten($green, 25%);
+        background-color: lighten(#000, 80%);
+
+        // background-image: linear-gradient(to bottom, $green 0%, $green 100%), url('/img/trends/trends-screencap.jpg');
+        // background-image: $slant-gradient, url('/img/trends/trends-screencap.jpg');
+        // background-image: $slant-gradient, url(/img/trends/trends-blank.jpg);
+        // @include slant-gradient-bg(5%, url(/img/trends/trends-blank.jpg));
+        background-image: url(/img/trends/trends-blank.jpg);
+    }
 }

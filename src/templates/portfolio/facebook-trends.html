@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block content %}
+
+{% include 'partials/hero-anim.html' %}
+
+{% include 'partials/portfolio.html' %}
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+{{ super() }}
+<script>
+    console.log('Hello, index');
+</script>
+{% endblock %}

@@ -25,6 +25,7 @@ const plumber = require('gulp-plumber')
 const critical = require('critical').stream
 const runSequence = require('run-sequence')
 const config = require('./config').get()
+const prettyUrl = require('gulp-pretty-url');
 const browserslist = 'last 2 versions, Firefox ESR'  // see https://github.com/ai/browserslist#queries
 const extrasGlob = 'src/**/*.{txt,json,xml,ico,jpeg,jpg,png,gif,svg,ttf,otf,eot,woff,woff2}'
 
@@ -67,12 +68,12 @@ gulp.task('watchify', () => {
 gulp.task('sass', () => {
   return gulp.src('src/scss/**/*.scss')
     .pipe(plumber())
-    .pipe(stylelint({
-      browsers: browserslist,
-      syntax: 'scss',
-      reporters: [ { formatter: 'string', console: true } ],
-      failAfterError: false
-    }))
+    // .pipe(stylelint({
+    //   browsers: browserslist,
+    //   syntax: 'scss',
+    //   reporters: [ { formatter: 'string', console: true } ],
+    //   failAfterError: false
+    // }))
     .pipe(sourcemaps.init())
     .pipe(sass({
       includePaths: [path.join(path.dirname(require.resolve('foundation-sites')), '../scss')]
@@ -89,6 +90,7 @@ gulp.task('nunjucks', () => {
     .pipe(nunjucks.compile(config, {
       throwOnUndefined: true
     }))
+    .pipe(prettyUrl())
     .pipe(plumber.stop())
     .pipe(gulp.dest('public/'))
 })
