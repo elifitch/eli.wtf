@@ -14,7 +14,8 @@ $bar-width: $bar-height / 4.8;
   font-size: 0.4em;
   height: 60vh;
   position: relative;
-  background: #333;
+  background: $dark-gray;
+  color: $dark-gray;
   overflow: hidden;
   @media #{$medium-up} {
     // height: 80vh;

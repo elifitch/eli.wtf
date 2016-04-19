@@ -1,18 +1,18 @@
-%alpha {
+.alpha, %alpha {
     font-family: 'brandon grotesque';
     font-weight: 800;
     font-style: italic;
     color: inherit;
     font-size: 6em;
 }
-%beta {
+.beta, %beta {
     @extend %alpha;
     font-size: 3em;
 }
-%gamma {
+.gamma, %gamma {
     @extend %alpha;
 }
-%copy {
+.copy, %copy {
     font-family: 'pinopolis';
     font-weight: 400;
     font-style: regular;

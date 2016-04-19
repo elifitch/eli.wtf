@@ -6,6 +6,7 @@
 @import "type";
 @import "base";
 // @include foundation-global-styles;
+// @include foundation-flex-grid;
 @include foundation-flex-grid;
 // @include foundation-typography;
 // @include foundation-forms;
@@ -52,3 +53,5 @@
 @import "components/hero-anim";
 @import "components/link-block";
 @import "components/post";
+
+@import "utilities/colors";
