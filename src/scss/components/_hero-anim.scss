@@ -38,6 +38,7 @@ $bar-width: $bar-height / 4.8;
   text-align: center;
 }
 .hero-anim__bar {
+  position: relative;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: inline-block;
@@ -52,11 +53,13 @@ $bar-width: $bar-height / 4.8;
   }
   &:nth-child(odd) {
     // transform: translateY(12.5%);
-    transform: translateY(2.5em);
+    // transform: translateY(2.5em);
+    top: 2.5em;
   }
   &:nth-child(even) {
     // transform: translateY(-12.5%);
-    transform: translateY(-2.5em);
+    // transform: translateY(-2.5em);
+    top: -2.5em;
   }
 }
 .hero-anim__title {
