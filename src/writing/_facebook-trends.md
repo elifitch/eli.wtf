@@ -2,7 +2,7 @@
 
 # Facebook Trends
 
-## [[[The Problem]]]
+## The Problem
 This was a real motherfucker of a project. Facebook approached ISL in March 2015 to create a data visualization of Facebook Trends the Facebook Trends API for their F8 developer conference. The project had a hellishly tight timeline, with concepting, design, and development packed into 8 weeks.  This was my first WebGL project and first 3d project.  It was a rousing success, and Facebook asked us to turn it into an administerable product for their offices and events.
 
 ## Concepting
@@ -36,6 +36,14 @@ Trends Viz was a tremendous success at F8.  People loved using it, CNN and HLN i
 Facebook asked us to create version 2, a stable product, for future events and as a permanent installation in their offices.
 
 ## The Product
+It's not often you get a chance to undertake a clean-slate rebuild of a project you care about, and I didn't let this one go to waste.
 
+I completely rearchitected the application. It's completely modular, and built as a generic 3d visualization platform that takes a dataset, parameters to describe the 3d objects, and an interaction callback. You wanted to have a cloud of 3d cats representing the internet's famous felines? Easy peasy. The platform should see the light of day as open source soon.
+
+The app was rebuilt from the ground up with performance in mind. I used web workers to push as much computation as possible onto background threads, limiting per-frame operations, and simplified vignetting & blurring.  The performance gains were simply *bonkers*.  What required a gaming PC before will now comfortably run on old-ish mobile devices.
+
+These changes were supplemented by a ground-up rebuild of our social backend, and the creation of an admin panel that lets Facebook curate trends for the visualization.
+
+##Play
 
 
