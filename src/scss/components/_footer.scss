@@ -1,0 +1,56 @@
+.footer {
+
+}
+.footer__link {
+    display: inline-block;
+    width: 0;
+    height: 4em;
+    margin-right: 4em;
+    svg {
+        height: 100%;
+        width: auto;
+    }
+    path {
+        transition: all 0.2s;
+    }
+}
+.footer__twitter {
+    margin-right: 3.6em;
+    path {
+        fill: $off-white;
+        stroke: $off-white;
+        stroke-width: 0.05em;
+    }
+    &:hover path {
+        fill: $blue;
+        stroke: $blue;
+    }
+}
+.footer__codepen {
+    path {
+        fill: $off-white;
+    }
+    &:hover path {
+        fill: $green;
+    }
+}
+.footer__dribbble {
+    height: 3.2em;
+    transform: translateY(-0.4em);
+    path {
+        fill: $off-white;
+    }
+    &:hover path {
+        fill: $pink;
+    }
+}
+.footer__github {
+    height: 2.4em;
+    transform: translateY(#{(2.4 - 4) / 2}em);
+    path {
+        fill: $off-white;
+    }
+    &:hover path {
+        fill: $purple;
+    }
+}
